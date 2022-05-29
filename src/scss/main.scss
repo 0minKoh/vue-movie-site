@@ -1,0 +1,10 @@
+// Default variable 재정의(required 위에 위치해야 함)
+$primary: #FDC000;
+
+//추가 Required 모듈 import
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+//require import
+@import "../../node_modules/bootstrap/scss/bootstrap";
