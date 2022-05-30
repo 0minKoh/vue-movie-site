@@ -26,40 +26,48 @@ export default {
   },
   actions: { //비동기 함수
     async searchMovies({state, commit}, payload) {
-      const res = await _fetchMovie({
-        ...payload,
-        page: 1
-      })
-      // console.log(res.data)
-      const {Search, totalResults} = res.data
-      commit('updateState', {
-        movies: _uniqBy(Search, 'imdbID') //겹치는 ID가 제거됨
-      })
-      console.log(totalResults) //268
-      console.log(typeof totalResults) // string
-
-      const total = parseInt(totalResults, 10)
-      const pageLength = Math.ceil(total / 10) //ceil = 올림 //페이지 개수
-
-      //추가 요청
-      if (pageLength > 1) {
-        for (let page = 2; page <= pageLength; page += 1) {
-          if (page > (payload.number / 10)) {
-            break
+      try {
+        const res = await _fetchMovie({
+          ...payload,
+          page: 1
+        })
+        // console.log(res.data)
+        const {Search, totalResults} = res.data
+        commit('updateState', {
+          movies: _uniqBy(Search, 'imdbID') //겹치는 ID가 제거됨
+        })
+        console.log(totalResults) //268
+        console.log(typeof totalResults) // string
+  
+        const total = parseInt(totalResults, 10)
+        const pageLength = Math.ceil(total / 10) //ceil = 올림 //페이지 개수
+  
+        //추가 요청
+        if (pageLength > 1) {
+          for (let page = 2; page <= pageLength; page += 1) {
+            if (page > (payload.number / 10)) {
+              break
+            }
+            const res = await _fetchMovie({
+              ...payload,
+              page
+            })
+            const { Search } = res.data
+            commit('updateState', {
+              movies: [
+                ...state.movies,
+                ..._uniqBy(Search, 'imdbID')
+              ] //기존 데이터 유지, 새로운 데이터 추가
+            })
           }
-          const res = await _fetchMovie({
-            ...payload,
-            page
-          })
-          const { Search } = res.data
-          commit('updateState', {
-            movies: [
-              ...state.movies,
-              ..._uniqBy(Search, 'imdbID')
-            ] //기존 데이터 유지, 새로운 데이터 추가
-          })
         }
-      }
+      } catch (message) {
+        commit('updateState', {
+          movies: [],
+          message: '',
+          loading: false
+        })
+        }
     }
   }
 }
@@ -72,6 +80,9 @@ async function _fetchMovie(payload) {
   return new Promise((resolve, reject) => {
     axios.get(url)
       .then(res => {
+        if (res.data.Error) { //try catch로 에러를 못잡을 경우
+          reject(res.data.Error)
+        }
         resolve(res)
       })
       .catch(err => {
