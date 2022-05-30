@@ -24,17 +24,17 @@ export default {
     }
   },
   actions: { //비동기 함수
-    searchMovies({commit}, payload) {
+    async searchMovies({commit}, payload) {
       const {title, type, number, year} = payload
       const OMDB_API_KEY = '7035c60c'
-
-      const res = axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
+      const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
+      console.log(res.data)
       const {Search, totalResults} = res.data
       commit('updateState', {
-        movies: Search,
-        message: 'hello world',
-        loading: true
+        movies: Search
       })
+      console.log(totalResults)
+      console.log(typeof totalResults)
     }
   }
 }

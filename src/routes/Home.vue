@@ -1,6 +1,7 @@
 <template>
   <Headline/>
   <Search/>
+  <MovieList/>
 </template>
 
 <script>
