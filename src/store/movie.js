@@ -31,7 +31,7 @@ export default {
           ...payload,
           page: 1
         })
-        // console.log(res.data)
+        console.log(res)
         const {Search, totalResults} = res.data
         commit('updateState', {
           movies: _uniqBy(Search, 'imdbID') //겹치는 ID가 제거됨
@@ -72,7 +72,7 @@ export default {
   }
 }
 
-async function _fetchMovie(payload) {
+function _fetchMovie(payload) {
   const { title, type, year, page } = payload
   const OMDB_API_KEY = '7035c60c'
   const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
