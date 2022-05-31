@@ -32,7 +32,14 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~/scss/main";
   .container { //영화 검색할 때 출력 방식
+  margin-top:30px;
+    .inner {
+      background-color: $gray-200;
+      padding: 10px 0;
+      border-radius: 4px;
+    }
     .movies {
       display: flex;
       flex-wrap: wrap;

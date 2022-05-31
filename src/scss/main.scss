@@ -1,6 +1,15 @@
 // Default variable 재정의(required 위에 위치해야 함)
 $primary: #FDC000;
 
+//Bootstrap container 반응형 크기 커스터마이징
+$container-max-width: (
+  sm: 540px,
+  md: 704px,
+  lg: 924px,
+  xl: 1140px,
+  xxl: 1364px
+);
+
 //추가 Required 모듈 import
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
