@@ -7,7 +7,7 @@ export default {
   //data
   state: () => ({
     movies: [],
-    message: '',
+    message: 'Search for the movie title!',
     loading: false
   }),
   //computed
@@ -26,6 +26,9 @@ export default {
   },
   actions: { //비동기 함수
     async searchMovies({state, commit}, payload) {
+      commit('updateState', { //메시지 초기화
+        message: ''
+      })
       try {
         const res = await _fetchMovie({
           ...payload,
