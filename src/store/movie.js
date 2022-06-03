@@ -26,8 +26,12 @@ export default {
   },
   actions: { //비동기 함수
     async searchMovies({state, commit}, payload) {
+      if (state.loading) { //동시에 여러번 실행되는 것을 방지 
+        return //searchMovies 종료
+      }
       commit('updateState', { //메시지 초기화
-        message: ''
+        message: '',
+        loading: true
       })
       try {
         const res = await _fetchMovie({
@@ -70,7 +74,11 @@ export default {
           message: '',
           loading: false
         })
-        }
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
     }
   }
 }
